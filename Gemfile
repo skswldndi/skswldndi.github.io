@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '3.2.0' # Ruby 버전 명시
+ruby '3.3.5' # Ruby 버전 명시
 
 gem 'jekyll'
 
