@@ -67,7 +67,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16' # Prettier와 호환되는 Node.js 버전 선택
+          node-version: "16" # Prettier와 호환되는 Node.js 버전 선택
 
       - name: Install Prettier
         run: npm install --save-dev prettier @shopify/prettier-plugin-liquid
