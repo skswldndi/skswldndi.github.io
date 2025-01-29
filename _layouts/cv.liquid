@@ -4,25 +4,25 @@ layout: default
 {% unless site.data.resume %}
   <div class="post">
     <header class="post-header">
-        {% if page.cv_pdf %}
-          <a
-            {% if page.cv_pdf contains '://' %}
-              href="{{ page.cv_pdf }}"
-            {% else %}
-              href="{{ page.cv_pdf | prepend: 'assets/pdf/' | relative_url }}"
-            {% endif %}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="float-right"
-          >
-            <i class="fa-solid fa-file-pdf"></i>
-          </a>
-        {% endif %}
-        <!-- <h1> 태그 제거 -->
-        
-        {% if page.description %}
-          <p class="post-description">{{ page.description }}</p>
-        {% endif %}
+      {% if page.cv_pdf %}
+        <a
+          {% if page.cv_pdf contains '://' %}
+            href="{{ page.cv_pdf }}"
+          {% else %}
+            href="{{ page.cv_pdf | prepend: 'assets/pdf/' | relative_url }}"
+          {% endif %}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="float-right"
+        >
+          <i class="fa-solid fa-file-pdf"></i>
+        </a>
+      {% endif %}
+      <!-- <h1> 태그 제거 -->
+
+      {% if page.description %}
+        <p class="post-description">{{ page.description }}</p>
+      {% endif %}
     </header>
 
     <article>
@@ -54,25 +54,25 @@ layout: default
 {% else %}
   <div class="post">
     <header class="post-header">
-        {% if page.cv_pdf %}
-          <a
-            {% if page.cv_pdf contains '://' %}
-              href="{{ page.cv_pdf }}"
-            {% else %}
-              href="{{ page.cv_pdf | prepend: 'assets/pdf/' | relative_url }}"
-            {% endif %}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="float-right"
-          >
-            <i class="fa-solid fa-file-pdf"></i>
-          </a>
-        {% endif %}
-        <!-- <h1> 태그 제거 -->
-        
-        {% if page.description %}
-          <p class="post-description">{{ page.description }}</p>
-        {% endif %}
+      {% if page.cv_pdf %}
+        <a
+          {% if page.cv_pdf contains '://' %}
+            href="{{ page.cv_pdf }}"
+          {% else %}
+            href="{{ page.cv_pdf | prepend: 'assets/pdf/' | relative_url }}"
+          {% endif %}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="float-right"
+        >
+          <i class="fa-solid fa-file-pdf"></i>
+        </a>
+      {% endif %}
+      <!-- <h1> 태그 제거 -->
+
+      {% if page.description %}
+        <p class="post-description">{{ page.description }}</p>
+      {% endif %}
     </header>
 
     <article>
@@ -114,7 +114,7 @@ layout: default
                 {% when 'references' %}
                   {% include resume/references.liquid %}
                 {% when 'extracurricular' %}
-                  {% include resume/extracurricular.liquid %}  
+                  {% include resume/extracurricular.liquid %}
                 {% else %}
 
               {% endcase %}

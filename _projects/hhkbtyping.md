@@ -15,4 +15,4 @@ category: fun
 
 I created it to experience the exhilaration of watching my cool Happy Hacking keyboard in action.
 
-HTML and CSS used. 
+HTML and CSS used.

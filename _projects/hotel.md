@@ -13,7 +13,7 @@ category: fun
     </div>
 </div>
 
-Graphical reinterpretation of <a href="https://big.dk/projects/audemars-piguet-hotel-5067">BIG's Hotel des Horlogers</a> design. 
+Graphical reinterpretation of <a href="https://big.dk/projects/audemars-piguet-hotel-5067">BIG's Hotel des Horlogers</a> design.
 
 Rhino 3D, Illustrator, Photoshop used.
 

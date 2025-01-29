@@ -1,6 +1,7 @@
 {% assign img_path = include.path | remove: '.jpg' | remove: '.jpeg' | remove: '.png' | remove: '.tiff' | remove: '.gif' %}
 {% assign parts = include.path | split: '.' %}
-{% assign ext = parts.last | downcase %} <!-- 확장자를 소문자로 변환 -->
+{% assign ext = parts.last | downcase %}
+<!-- 확장자를 소문자로 변환 -->
 
 <figure
   {% if include.slot %}

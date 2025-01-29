@@ -10,32 +10,19 @@
     {
       "name": "Natural Language Processing",
       "icon": "fa-solid fa-tag",
-      "keywords": [
-        "Large Language Model",
-        "Turn-Taking in Dialogue",
-        "Conversational AI", 
-        "Jargon Translation"
-      ]
-    }, 
+      "keywords": ["Large Language Model", "Turn-Taking in Dialogue", "Conversational AI", "Jargon Translation"]
+    },
     {
       "name": "Human-Centered AI",
       "icon": "fa-solid fa-tag",
-      "keywords": [
-        "AI UX",
-        "Human-AI Interactions",
-        "AI Design Guidelines"
-      ]
-    }, 
+      "keywords": ["AI UX", "Human-AI Interactions", "AI Design Guidelines"]
+    },
     {
       "name": "Mechanical Keyboards",
       "icon": "fa-solid fa-tag",
-      "keywords": [
-        "Topre and Linear Switches",
-        "Personal Keyboard Layout Design", 
-        "40% Layout"
-      ]
-    } 
-  ], 
+      "keywords": ["Topre and Linear Switches", "Personal Keyboard Layout Design", "40% Layout"]
+    }
+  ],
 
   "education": [
     {
@@ -46,7 +33,7 @@
       "studyType": "Bachelor",
       "startDate": "2016-03-01",
       "endDate": "2023-08-01"
-    }, 
+    },
     {
       "institution": "Sungkyunkwan University",
       "location": "Suwon, South Korea",
@@ -86,24 +73,24 @@
     {
       "name": "Developing AI Model to Convert Noisy User-Generated Texts to Standard Sequences with Daewoo Shipbuilding & Marine Engineering",
       "summary": "This project focused on developing an AI model to convert noisy user-generated texts into standardized sequences, improving data consistency and usability for Daewoo Shipbuilding & Marine Engineering. My role was to write code, train the model, and guide team members by reviewing their implementations and ensuring the model could effectively handle variations in user input. I also conducted weekly coding sessions to support the team.",
-      "url": "", 
+      "url": "",
       "startDate": "2023",
       "endDate": "2023"
-    }, 
+    },
 
     {
       "name": "Developing Automatic Classification Model with Statistics Korea",
       "summary": "This project focused on developing an automatic classification model to analyze responses from foreigners in surveys conducted by Statistics Korea. My role was to write and review code to facilitate smooth model training for the team, modify the dataset to ensure that multilingual models could be effectively finetuned on Korean data, and guide team members throughout the process.",
       "startDate": "2022",
       "endDate": "2022"
-    }, 
+    },
 
     {
       "name": "Developing Automatic Classification Model for Shipowners' Requests with Daewoo Shipbuilding & Marine Engineering",
       "summary": "This project aimed to automatically classify shipowners’ diverse requests to improve work efficiency at Daewoo Shipbuilding & Marine Engineering. My role was to write code, train the model, and conduct weekly two-hour coding sessions to support team members. I also served as a programming teaching assistant throughout the project.",
       "startDate": "2021",
       "endDate": "2022"
-    }, 
+    },
 
     {
       "name": "Developing AI to Proactively Prevent Quality Issues in Manufacturing with Daewoo Shipbuilding & Marine Engineering",
@@ -111,7 +98,6 @@
       "startDate": "2021",
       "endDate": "2022"
     }
-
   ],
 
   "volunteer": [
@@ -131,14 +117,14 @@
       "position": "Representative",
       "url": "https://photo.khan.co.kr/photo_collection.html?art_id=20210525141339",
       "startDate": "2021"
-    }, 
+    },
     {
       "organization": "SungKyunKwan University News",
       "position": "Chief Editor",
       "url": "https://www.skkuw.com",
       "startDate": "2019",
       "endDate": "2021"
-    }, 
+    },
     {
       "organization": "SungKyunKwan University Construction Department",
       "position": "Student President",
