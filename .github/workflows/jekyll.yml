@@ -33,6 +33,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Ruby
         # https://github.com/ruby/setup-ruby/releases/tag/v1.207.0
         uses: ruby/setup-ruby@4a9ddd6f338a97768b8006bf671dfbad383215f4
@@ -40,14 +41,55 @@ jobs:
           ruby-version: "3.2.6" # Not needed with a .ruby-version file
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
           cache-version: 0 # Increment this number if you need to re-download cached gems
+
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
+
+      # **ImageMagick 7 설치 및 convert 심볼릭 링크 생성**
+      - name: Install ImageMagick 7 and create symlink for convert
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+          sudo ln -s /usr/bin/magick /usr/local/bin/convert
+
+      # **Python3 및 pip3 설치 후 Jupyter 설치**
+      - name: Install Python3, pip3 and Jupyter
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          pip3 install jupyter
+
+      # **Prettier 실행 (선택 사항)**
+      # 필요에 따라 Prettier를 사용하여 코드 스타일을 자동으로 수정할 수 있습니다.
+      # 아래 스텝은 Prettier 설정이 이미 프로젝트에 포함되어 있다고 가정합니다.
+      # Prettier를 사용하지 않는다면 이 섹션은 생략해도 됩니다.
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # Prettier와 호환되는 Node.js 버전 선택
+
+      - name: Install Prettier
+        run: npm install --save-dev prettier @shopify/prettier-plugin-liquid
+
+      - name: Run Prettier Fixes
+        run: npx prettier . --write
+
+      - name: Commit Prettier Fixes
+        if: github.event_name == 'push'
+        run: |
+          git config --local user.name "github-actions"
+          git config --local user.email "github-actions@github.com"
+          git add .
+          git commit -m "chore: Prettier auto-fix" || echo "No changes to commit"
+          git push origin main || echo "No changes to push"
+
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production
+
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v3
