@@ -35,8 +35,8 @@ ninja.data = [{
           description: "Reimagining OMA’s Park Design",
           section: "Projects",handler: () => {
               window.location.href = "/al-folio/projects/11th/";
-            },},{id: "projects-hhkb-typing-display",
-          title: 'HHKB Typing Display',
+            },},{id: "projects-interactive-typing-display",
+          title: 'Interactive Typing Display',
           description: "Showing which key you are pressing",
           section: "Projects",handler: () => {
               window.location.href = "/al-folio/projects/hhkbtyping/";
