@@ -1,6 +1,6 @@
 ---
 layout: page
-title: HHKB Typing Display
+title: Interactive Typing Display
 description: Showing which key you are pressing
 img: assets/img/hhkb-display.jpg
 importance: 5
