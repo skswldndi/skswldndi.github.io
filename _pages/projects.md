@@ -2,7 +2,7 @@
 layout: page
 title: projects
 permalink: /projects/
-description: A growing collection of your cool projects.
+description: I work on AI-related software and enjoy creating illustrations with the coolest design tools in my free time.
 nav: true
 nav_order: 3
 display_categories: [work, fun]
