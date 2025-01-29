@@ -11,20 +11,14 @@ The project is structured as follows, focusing on the main components that you w
 ├── 📂 assets/: contains the assets that are displayed in the website
 │   └── 📂 json/
     │   └── 📄 resume.json: CV in JSON format (https://jsonresume.org/)
-├── 📂 _bibliography/
-│   └── 📄 papers.bib: bibliography in BibTeX format
 ├── 📄 _config.yml: the configuration file of the template
 ├── 📂 _data/: contains some of the data used in the template
-│   ├── 📄 cv.yml: CV in YAML format, used when assets/json/resume.json is not found
 │   ├── 📄 repositories.yml: users and repositories info in YAML format
 │   └── 📄 socials.yml: your social media and contact info in YAML format
 ├── 📂 _includies/: contains code parts that are ncluded in the main HTML file
-│   └── 📄 news.liquid: defines the news section layout in the about page
 ├── 📂 _layouts/: contains the layouts to choose from in the frontmatter of the Markdown files
-├── 📂 _news/: the news that will appear in the news section in the about page
 ├── 📂 _pages/: contains the pages of the website
 |   └── 📄 404.md: 404 page (page not found)
-├── 📂 _posts/: contains the blog posts
 ├── 📂 _projects/: contains the projects
 └── 📂 _sass/: contains the SASS files that define the style of the website
     ├── 📄 _base.scss: base style of the website
@@ -217,9 +211,6 @@ You can also:
 
 To remove the publications, you can:
 
-- delete the [\_bibliography](_bibliography/) directory
-- delete the publications page [\_pages/publications.md](_pages/publications.md)
-- remove reference to publications page in our [\_pages/dropdown.md](_pages/dropdown.md)
 - remove `Jekyll Scholar` section in the [\_config.yml](_config.yml) file
 
 You can also:
@@ -227,7 +218,6 @@ You can also:
 - delete the [\_layouts/bib.liquid](_layouts/bib.liquid) file
 - delete [\_includes/bib_search.liquid](_includes/bib_search.liquid)
 - delete [\_includes/citation.liquid](_includes/citation.liquid)
-- delete [\_includes/selected_papers.liquid](_includes/selected_papers.liquid)
 - delete [\_plugins/google-scholar-citations.rb](_plugins/google-scholar-citations.rb)
 - delete [\_plugins/hide-custom-bibtex.rb](_plugins/hide-custom-bibtex.rb)
 - delete [\_plugins/inspirehep-citations.rb](_plugins/inspirehep-citations.rb)
@@ -237,8 +227,6 @@ You can also:
 
 To remove the repositories, you can:
 
-- delete the repositories page [\_pages/repositories.md](_pages/repositories.md)
-- delete [\_includes/repository/](_includes/repository/) directory
 
 ## Adding Token for Lighthouse Badger
 
