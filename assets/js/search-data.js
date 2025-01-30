@@ -45,6 +45,11 @@ ninja.data = [{
           description: "Reimagining BIG&#39;s Design",
           section: "Projects",handler: () => {
               window.location.href = "/al-folio/projects/hotel/";
+            },},{id: "projects-interrupting-ai-by-natural-language",
+          title: 'Interrupting AI by Natural Language',
+          description: "Combining Stop Generating function with your prompt",
+          section: "Projects",handler: () => {
+              window.location.href = "/al-folio/projects/stopgenerating/";
             },},{
         id: 'social-email',
         title: 'email',
