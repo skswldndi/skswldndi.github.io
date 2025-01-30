@@ -45,6 +45,11 @@ ninja.data = [{
           description: "Reimagining BIG&#39;s Design",
           section: "Projects",handler: () => {
               window.location.href = "/al-folio/projects/hotel/";
+            },},{id: "projects-ai-answers-before-the-question-ends",
+          title: 'AI Answers Before the Question Ends',
+          description: "Sometimes before the user completes their thought",
+          section: "Projects",handler: () => {
+              window.location.href = "/al-folio/projects/preemptive/";
             },},{id: "projects-interrupting-ai-by-natural-language",
           title: 'Interrupting AI by Natural Language',
           description: "Combining Stop Generating function with your prompt",
