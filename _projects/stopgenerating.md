@@ -46,7 +46,7 @@ We fine-tuned LLaMA 3-8B on a custom dataset and built a web-based system.
 </div>
 When AI is generating, a user can interrupt naturally, e.g., “Any vegan options?”. This phrase acts as a prompt, eliminating manual stops or prompt revisions.
 
-32 participants tested the system. Most found it efficient. Details in the paper (not released yet).
+32 participants tested the system. Most found it efficient. Details in the [research paper](https://arxiv.org/abs/2501.18103).
 
 <h3>Tech Stack</h3>
 Python, Llama, HTML, CSS, Javascript, Photoshop, Illustrator used.

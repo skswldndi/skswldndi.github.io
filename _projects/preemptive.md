@@ -47,7 +47,7 @@ A custom dataset was used to finetune LLaMA 3-8B, followed by the development of
 
 The system generates responses before a user has completed their question. A user study revealed mixed reactions: Some participants found the interaction engaging and communicative, while others, particularly those who use prompt writing as a way to structure their thoughts, found it disruptive.
 
-Further details are provided in the research paper (not yet released).
+Further details are provided in the [research paper](https://arxiv.org/abs/2501.18103).
 
 <h3>Tech Stack</h3>
 Python, LLaMA, HTML, CSS, JavaScript, Photoshop, and Illustrator.
