@@ -47,6 +47,13 @@
 
   "publications": [
     {
+      "name": "Beyond Turn-taking: Introducing Text-based Overlap into Human-LLM Interactions",
+      "publisher": "Arxiv",
+      "releaseDate": "2025-01",
+      "url": "https://arxiv.org/abs/2501.18103",
+      "summary": "Traditional text-based human-AI interactions often adhere to a strict turn-taking approach. In this research, we propose a novel approach that incorporates overlapping messages, mirroring natural human conversations. Our findings contribute to the understanding of design space for overlapping interactions. "
+    },
+    {
       "name": "KpopMT: Translation Dataset with Terminology for Kpop Fandom",
       "publisher": "The Seventh Workshop on Technologies for Machine Translation of Low-Resource Languages (LoResMT)",
       "releaseDate": "2024-08",
