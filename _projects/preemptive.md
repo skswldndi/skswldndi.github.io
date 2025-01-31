@@ -3,7 +3,7 @@ layout: page
 title: AI Answers Before the Question Ends
 description: Sometimes before the user completes their thought
 img: assets/img/preemptive-waves.png
-importance: 5
+importance: 2
 category: work
 ---
 

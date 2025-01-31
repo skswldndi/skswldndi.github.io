@@ -3,7 +3,7 @@ layout: page
 title: Interrupting AI by Natural Language
 description: Combining Stop Generating function with your prompt
 img: assets/img/stopgenerating-scene2.png
-importance: 5
+importance: 1
 category: work
 ---
 
