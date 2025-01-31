@@ -15,4 +15,6 @@ profile:
 
 Greetings! 안녕하세요!
 
-My research interests are constantly evolving, having transitioned from data mining and machine translation to human-computer interaction (HCI). However, my motivation remains consistent: I believe that technologies like AI should ultimately serve and benefit people.
+I believe that AI should be designed to communicate in ways that feel natural to people, rather than requiring people to adapt to AI like with prompting.
+
+I enjoy a variety of things, such as singing band songs at karaoke (though lately I think I prefer R&B), admiring cool graphic designs, and drinking Einspänner chocolate lattes with my lab colleague. But above all, my favorite is playing Stardew Valley with my husband.
