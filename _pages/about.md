@@ -17,4 +17,4 @@ Greetings! 안녕하세요!
 
 I believe that AI should be designed to communicate in ways that feel natural to people, rather than requiring people to adapt to AI like with prompting.
 
-I enjoy a variety of things, such as singing band songs at karaoke (though lately I think I prefer R&B), admiring cool graphic designs, and drinking Einspänner chocolate lattes with my lab colleague. But above all, my favorite is playing Stardew Valley with my husband.
+I enjoy a variety of things, such as singing band songs at karaoke (though lately I think I prefer R&B) and drinking Einspänner chocolate lattes with my lab colleague. But above all, my favorite is playing Stardew Valley with my husband, even though he finds patting the livestock a hassle and only cares about fishing.
