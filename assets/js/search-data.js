@@ -18,7 +18,7 @@ ninja.data = [{
           },
         },{id: "nav-projects",
           title: "projects",
-          description: "I work on AI-related software and enjoy creating illustrations with the coolest design tools in my free time.",
+          description: "",
           section: "Navigation",
           handler: () => {
             window.location.href = "/al-folio/projects/";
