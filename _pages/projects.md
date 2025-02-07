@@ -5,7 +5,7 @@ permalink: /projects/
 description: I work on AI-related software and enjoy creating illustrations with the coolest design tools in my free time.
 nav: true
 nav_order: 3
-display_categories: [work, fun]
+display_categories: [HCI, fun]
 horizontal: false
 ---
 

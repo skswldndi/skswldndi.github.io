@@ -4,7 +4,7 @@ title: AI Provides Real-time Listening Feedback
 description: in natural language, as users ask a question
 img: assets/img/backchannels-machine.png
 importance: 3
-category: work
+category: HCI
 ---
 
 <h3>Can AI Show That It's Listening?</h3>

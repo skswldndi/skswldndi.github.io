@@ -4,7 +4,7 @@ title: AI Answers Before the Question Ends
 description: Sometimes before the user completes their thought
 img: assets/img/preemptive-waves.png
 importance: 2
-category: work
+category: HCI
 ---
 
 <h3>Humans Naturally Overlap in Conversation</h3>
