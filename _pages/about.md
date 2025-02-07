@@ -15,6 +15,6 @@ profile:
 
 Greetings! 안녕하세요!
 
-I believe AI should be designed in a way that feels natural to people, rather than expecting people to adapt to AI. I see value in drawing inspiration from how people interact with each other and the world around them when designing AI.
+This is my personal homepage, where I share my thoughts on various topics, focusing on data-related projects, NLP, HCI, and learning through experiences. I also post illustrations that I create for fun.
 
-I enjoy a variety of things, such as singing band songs at karaoke (though lately I think I prefer R&B) and drinking Einspänner chocolate lattes with my lab colleague. But above all, my favorite is playing Stardew Valley with my fisher husband.
+I enjoy a variety of things, such as singing band songs at karaoke and drinking Einspänner chocolate lattes with my lab colleague. But above all, my favorite is playing Stardew Valley with my fisher husband.
