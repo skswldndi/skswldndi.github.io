@@ -2,10 +2,10 @@
 layout: page
 title: projects
 permalink: /projects/
-description: A collection of projects spanning data, NLP x HCI, and creative explorations for fun.
+description: A collection of projects spanning NLP x HCI and creative explorations for fun.
 nav: true
 nav_order: 3
-display_categories: [Data, NLP X HCI, fun]
+display_categories: [NLP X HCI, fun]
 horizontal: false
 ---
 
