@@ -18,7 +18,7 @@ ninja.data = [{
           },
         },{id: "nav-projects",
           title: "projects",
-          description: "A collection of projects spanning data, NLP x HCI, and creative explorations for fun.",
+          description: "A collection of projects spanning NLP x HCI and creative explorations for fun.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/al-folio/projects/";
