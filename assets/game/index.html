@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hide the Potato Chips Game</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="game-container">
+      <div class="game-header">
+        <h1>🍟 Hide the Potato Chips 🍟</h1>
+        <div class="game-info">
+          <div class="score">Hidden Chips: <span id="score">0</span> / <span id="total">0</span></div>
+          <div class="timer">Time Left: <span id="timer">60</span> sec</div>
+        </div>
+      </div>
+      <canvas id="gameCanvas"></canvas>
+      <div class="instructions">
+        <p>🎮 Help JiWoo hide the potato chips from her husband!</p>
+        <p>📦 Step 1: Go near a chip and press Spacebar to pick it up</p>
+        <p>📦 Step 2: Go to a hiding spot (📦) and press Spacebar to hide it</p>
+        <p>⚠️ Hide all chips before JiWoo's husband arrives!</p>
+      </div>
+      <div id="gameOver" class="game-over hidden">
+        <h2 id="gameOverTitle"></h2>
+        <p id="gameOverMessage"></p>
+        <button onclick="restartGame()">Restart</button>
+      </div>
+    </div>
+    <script src="game.js"></script>
+  </body>
+</html>
