@@ -3,31 +3,590 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hide the Potato Chips Game</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>TYPE JIWOO</title>
+    <style>
+      :root {
+        --bg-color: #000000;
+        --text-noise: rgba(255, 255, 255, 0.04);
+        --target-red: #ff3b30;
+        --feedback-green: #34c759;
+        --apple-blue: #0071e3;
+        --glass-bg: rgba(255, 255, 255, 0.01);
+        --glass-border: rgba(255, 255, 255, 0.08);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: #f5f5f7;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        flex-direction: column;
+      }
+
+      #stream-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .word-node {
+        position: absolute;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-noise);
+        user-select: none;
+        white-space: nowrap;
+        will-change: transform;
+        animation: floating 12s infinite linear;
+      }
+
+      @keyframes targetFlash {
+        0% {
+          color: var(--text-noise);
+          transform: scale(1);
+          opacity: 1;
+        }
+        10% {
+          color: var(--target-red);
+          transform: scale(1.5);
+          opacity: 1;
+          z-index: 100;
+        }
+        90% {
+          color: var(--target-red);
+          transform: scale(1.5);
+          opacity: 1;
+          z-index: 100;
+        }
+        100% {
+          color: transparent;
+          transform: scale(0.8);
+          opacity: 0;
+        }
+      }
+
+      @keyframes floating {
+        0% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        50% {
+          transform: translate(20px, -20px) rotate(1deg);
+        }
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+      }
+
+      #ui-layer {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        pointer-events: none;
+        width: 100%;
+      }
+
+      #status {
+        position: fixed;
+        bottom: 130px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.8rem;
+        letter-spacing: 0.5em;
+        color: rgba(255, 255, 255, 0.4);
+        text-transform: uppercase;
+        font-weight: 800;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+
+      #top-hud {
+        position: fixed;
+        top: 40px;
+        width: 100%;
+        padding: 0 40px;
+        display: flex;
+        justify-content: space-between;
+        color: rgba(255, 255, 255, 0.3);
+        z-index: 20;
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+      }
+
+      .feedback {
+        position: fixed;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2.2rem;
+        font-weight: 900;
+        opacity: 0;
+        z-index: 30;
+        pointer-events: none;
+        transition: opacity 0.15s ease;
+        display: none;
+      }
+
+      #result-screen {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.98);
+        z-index: 100;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(25px);
+      }
+
+      #start-btn,
+      .retry-btn {
+        background: #ffffff;
+        color: #000;
+        padding: 18px 50px;
+        border-radius: 40px;
+        border: none;
+        font-weight: 800;
+        font-size: 0.95rem;
+        cursor: pointer;
+        pointer-events: auto;
+        transition: all 0.2s ease;
+        letter-spacing: 0.05em;
+      }
+
+      #start-btn:hover {
+        transform: scale(1.05);
+      }
+
+      /* 동적 생성될 입력창 스타일 */
+      #input-container {
+        position: fixed;
+        bottom: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 380px;
+        z-index: 50;
+        pointer-events: auto;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+
+      #visual-input {
+        width: 100%;
+        height: 56px;
+        padding: 0 20px;
+        background-color: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        color: #ffffff;
+        font-size: 1.15rem;
+        font-weight: 600;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        outline: none;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+      }
+
+      .shake {
+        animation: shake 0.4s;
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-8px);
+        }
+        50% {
+          transform: translateX(8px);
+        }
+        75% {
+          transform: translateX(-4px);
+        }
+      }
+
+      .timer-warning {
+        color: var(--target-red) !important;
+        animation: pulse 0.5s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div class="game-container">
-      <div class="game-header">
-        <h1>🍟 Hide the Potato Chips 🍟</h1>
-        <div class="game-info">
-          <div class="score">Hidden Chips: <span id="score">0</span> / <span id="total">0</span></div>
-          <div class="timer">Time Left: <span id="timer">60</span> sec</div>
-        </div>
-      </div>
-      <canvas id="gameCanvas"></canvas>
-      <div class="instructions">
-        <p>🎮 Help JiWoo hide the potato chips from her husband!</p>
-        <p>📦 Step 1: Go near a chip and press Spacebar to pick it up</p>
-        <p>📦 Step 2: Go to a hiding spot (📦) and press Spacebar to hide it</p>
-        <p>⚠️ Hide all chips before JiWoo's husband arrives!</p>
-      </div>
-      <div id="gameOver" class="game-over hidden">
-        <h2 id="gameOverTitle"></h2>
-        <p id="gameOverMessage"></p>
-        <button onclick="restartGame()">Restart</button>
-      </div>
+    <div id="top-hud">
+      <div>LIMIT: <span id="timer-val">60</span>S</div>
+      <div>ACC: <span id="acc-val">0</span>%</div>
     </div>
-    <script src="game.js"></script>
+
+    <div id="stream-container"></div>
+
+    <div id="ui-layer">
+      <div id="start-screen">
+        <h1 style="font-size: 3.5rem; margin-bottom: 12px; font-weight: 900; letter-spacing: -0.05em">TYPE JIWOO</h1>
+        <p style="margin-bottom: 45px; color: #86868b; font-size: 1.1rem; line-height: 1.6">
+          Flash: 0.6s | Input: 3.0s<br />A 600ms glimpse into who I am.
+        </p>
+        <button id="start-btn">START</button>
+      </div>
+      <div id="status">READY</div>
+      <div id="feedback-msg" class="feedback"></div>
+      <div id="input-mount-point"></div>
+    </div>
+
+    <div id="result-screen">
+      <h2 id="result-rank" style="font-size: 4.5rem; margin-bottom: 10px">RANK</h2>
+      <p
+        id="result-comment"
+        style="font-size: 1.2rem; color: #86868b; margin-bottom: 40px; max-width: 500px; text-align: center; line-height: 1.6"
+      ></p>
+      <button class="retry-btn" onclick="location.reload()">RETRY</button>
+    </div>
+
+    <script>
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      let inputTimer = null;
+      let gameActive = false;
+      let targetWord = "";
+      let isInputPhase = false;
+      let trials = 0;
+      let corrects = 0;
+      let timeLeft = 60;
+      let visualInput = null;
+
+      const heavyWords = [
+        "JIWOO KIM",
+        "JONAS BELOUADI",
+        "GERMANY",
+        "SUNGKYUNKWAN UNIVERSITY",
+        "BANGKOK",
+        "SOUTH KOREA",
+        "VIENNA",
+        "KPOP",
+        "SEOUL",
+        "SUWON",
+        "TURN TAKING",
+        "CHATBOT",
+        "CONVERSATION",
+        "HCI",
+        "NATURAL LANGUAGE PROCESSING",
+        "KARAOKE",
+        "E-BIKES",
+        "KEYBOARD",
+        "INTERACTIVE",
+        "LONDON",
+        "TTS & STT",
+        "RESEARCH",
+        "LYON",
+        "OVERLAPBOT",
+        "CROOKIE",
+        "ICE COFFEE",
+        "POTATO CHIPS",
+        "MACHINE LEARNING ENGINEER",
+        "LARGE LANGUAGE MODEL",
+        "MACHINE TRANSLATION",
+      ];
+
+      function playClickSound() {
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(160, now);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(now + 0.03);
+      }
+
+      function playTickSound(isUrgent) {
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "square";
+        osc.frequency.setValueAtTime(isUrgent ? 1500 : 600, now);
+        gain.gain.setValueAtTime(isUrgent ? 0.03 : 0.015, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(now + 0.05);
+      }
+
+      function playSystemTone(isSuccess) {
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(isSuccess ? 1000 : 120, now);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(now + 0.25);
+      }
+
+      function createWordNode() {
+        const span = document.createElement("span");
+        span.className = "word-node";
+        span.innerText = heavyWords[Math.floor(Math.random() * heavyWords.length)];
+        span.style.top = Math.random() * 82 + "vh";
+        span.style.left = Math.random() * 80 + "vw";
+        document.getElementById("stream-container").appendChild(span);
+      }
+
+      let tickCount = 0; // 이 변수는 함수 밖(script 상단)에 선언해두는 게 안전합니다.
+
+      function startTimer() {
+        // 주기를 1000에서 250으로 변경 (0.25초마다 반복)
+        const t = setInterval(() => {
+          if (!gameActive) {
+            clearInterval(t);
+            return;
+          }
+
+          // 0.25초마다 "띡" 소리 발생
+          playTickSound(timeLeft <= 10);
+
+          tickCount++;
+
+          // 4번 틱이 울릴 때마다 (0.25s * 4 = 1s) 실제 시간 1초 차감
+          if (tickCount % 4 === 0) {
+            timeLeft--;
+            document.getElementById("timer-val").innerText = timeLeft;
+
+            if (timeLeft <= 10) {
+              document.getElementById("timer-val").classList.add("timer-warning");
+            }
+
+            if (timeLeft <= 0) {
+              endGame();
+              clearInterval(t);
+            }
+          }
+        }, 250);
+      }
+
+      function playRound() {
+        if (!gameActive) return;
+        if (inputTimer) clearTimeout(inputTimer);
+
+        // 1. 단어가 다 떨어졌으면 게임 종료
+        if (heavyWords.length === 0) {
+          endGame();
+          return;
+        }
+
+        isInputPhase = false;
+        document.getElementById("status").style.opacity = "0.2";
+        if (visualInput) {
+          visualInput.value = "";
+          visualInput.classList.remove("shake");
+        }
+
+        setTimeout(() => {
+          // 2. [핵심] 배열에서 랜덤으로 하나를 '추출(splice)'합니다. (중복 원천 차단)
+          const randomIndex = Math.floor(Math.random() * heavyWords.length);
+          targetWord = heavyWords.splice(randomIndex, 1)[0];
+
+          // 3. 화면에 해당 단어 노드를 새로 하나 만듭니다. (타겟 전용)
+          const container = document.getElementById("stream-container");
+          const targetNode = document.createElement("span");
+          targetNode.className = "word-node";
+          targetNode.innerText = targetWord;
+
+          // 위치는 랜덤하게
+          targetNode.style.top = Math.random() * 60 + 20 + "vh";
+          targetNode.style.left = Math.random() * 60 + 10 + "vw";
+
+          // 4. 타겟 애니메이션 실행
+          targetNode.style.animation = "targetFlash 0.6s forwards";
+          container.appendChild(targetNode);
+
+          isInputPhase = true;
+          document.getElementById("status").style.opacity = "1";
+          if (visualInput) visualInput.focus();
+
+          // 입력 제한 시간 (3초)
+          inputTimer = setTimeout(() => {
+            if (isInputPhase) {
+              trials++;
+              isInputPhase = false;
+              playSystemTone(false);
+              showFeedback("TIME OUT", "var(--target-red)");
+              if (visualInput) visualInput.classList.add("shake");
+              updateAcc();
+              setTimeout(() => {
+                targetNode.remove();
+                playRound();
+              }, 600);
+            }
+          }, 3000);
+
+          // 0.6초 뒤에 타겟 노드 삭제
+          setTimeout(() => {
+            if (targetNode.parentNode && !isInputPhase) {
+              targetNode.remove();
+            }
+          }, 600);
+        }, 800);
+      }
+
+      function handleInput(e) {
+        if (!isInputPhase || !gameActive) return;
+        if (e.key === "Enter") {
+          if (inputTimer) clearTimeout(inputTimer);
+          trials++;
+          const userVal = visualInput.value.trim().toUpperCase();
+          if (userVal === targetWord) {
+            corrects++;
+            playSystemTone(true);
+            showFeedback("MATCHED", "var(--feedback-green)");
+          } else {
+            playSystemTone(false);
+            showFeedback("MISSED", "var(--target-red)");
+            visualInput.classList.add("shake");
+          }
+          updateAcc();
+          isInputPhase = false;
+          setTimeout(playRound, 800);
+        } else if (e.key.length === 1 || e.key === "Backspace") {
+          playClickSound();
+        }
+      }
+
+      function updateAcc() {
+        const acc = trials === 0 ? 0 : Math.round((corrects / trials) * 100);
+        document.getElementById("acc-val").innerText = acc;
+      }
+
+      function showFeedback(text, color) {
+        const fb = document.getElementById("feedback-msg");
+
+        // 🔥 완전 초기화 (이게 핵심)
+        fb.style.transition = "none";
+        fb.style.opacity = "0";
+        fb.style.display = "none";
+
+        // 강제 reflow (브라우저 상태 초기화)
+        fb.offsetHeight;
+
+        // 값 세팅
+        fb.innerText = text;
+        fb.style.color = color;
+        fb.style.display = "block";
+
+        // transition 다시 켜기
+        fb.style.transition = "opacity 0.15s ease";
+
+        requestAnimationFrame(() => {
+          fb.style.opacity = "1";
+          fb.style.transform = "translate(-50%, -50%) scale(1.15)";
+        });
+
+        // 사라짐
+        setTimeout(() => {
+          fb.style.opacity = "0";
+          fb.style.transform = "translate(-50%, -50%) scale(1)";
+        }, 500);
+
+        // 🔥 무조건 숨김 (조건 제거)
+        setTimeout(() => {
+          fb.style.display = "none";
+        }, 700);
+      }
+
+      function endGame() {
+        gameActive = false;
+        document.getElementById("input-container").style.opacity = "0";
+        const accuracy = parseInt(document.getElementById("acc-val").innerText);
+        const rankTitle = document.getElementById("result-rank");
+        const rankComment = document.getElementById("result-comment");
+
+        if (accuracy >= 90) {
+          rankTitle.innerText = "SO CLOSE!";
+          rankTitle.style.color = "var(--feedback-green)";
+          rankComment.innerText = "Wow, you know me so well! We're definitely on the same page. Happy to meet you! 🤗";
+        } else if (accuracy >= 70) {
+          rankTitle.innerText = "GREAT MATCH";
+          rankTitle.style.color = "#64D2FF";
+          rankComment.innerText = "You have a deep understanding of me! Welcome to inner circle 😆 ";
+        } else if (accuracy >= 40) {
+          rankTitle.innerText = "GETTING THERE";
+          rankTitle.style.color = "var(--apple-blue)";
+          rankComment.innerText = "Not bad! You're starting to see what I'm about. Let's interact more. 😀";
+        } else if (accuracy >= 20) {
+          rankTitle.innerText = "STILL FRIENDS?";
+          rankTitle.style.color = "#FF9500";
+          rankComment.innerText = "Are you sure we've met? I think we need a long coffee chat to catch up. ☕️ ";
+        } else {
+          rankTitle.innerText = "HELLO STRANGER";
+          rankTitle.style.color = "var(--target-red)";
+          rankComment.innerText = "Oops, you're a complete stranger! But hey, it's a good chance to start fresh. 😇";
+        }
+        document.getElementById("result-screen").style.display = "flex";
+      }
+
+      document.getElementById("start-btn").addEventListener("click", () => {
+        if (audioCtx.state === "suspended") audioCtx.resume();
+
+        // 🔥 여기 추가 (가장 중요)
+        const fb = document.getElementById("feedback-msg");
+        fb.style.display = "none";
+        fb.style.opacity = "0";
+        fb.innerText = "";
+
+        gameActive = true;
+        document.getElementById("start-screen").style.display = "none";
+
+        // 입력창 생성
+        const mount = document.getElementById("input-mount-point");
+        mount.innerHTML = `<div id="input-container"><input type="text" id="visual-input" autocomplete="off" spellcheck="false"></div>`;
+        visualInput = document.getElementById("visual-input");
+        visualInput.addEventListener("keydown", handleInput);
+
+        setTimeout(() => {
+          document.getElementById("input-container").style.opacity = "1";
+        }, 50);
+
+        document.getElementById("status").style.opacity = "1";
+        for (let i = 0; i < 150; i++) createWordNode();
+        startTimer();
+        playRound();
+      });
+    </script>
   </body>
 </html>
