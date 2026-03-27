@@ -411,6 +411,7 @@
         }
 
         isInputPhase = false;
+        document.getElementById("status").innerText = "WAITING"; // READY 대신 진행 상황 표시
         document.getElementById("status").style.opacity = "0.2";
         if (visualInput) {
           visualInput.value = "";
@@ -418,29 +419,26 @@
         }
 
         setTimeout(() => {
-          // 2. [핵심] 배열에서 랜덤으로 하나를 '추출(splice)'합니다. (중복 원천 차단)
+          // 2. 단어 추출
           const randomIndex = Math.floor(Math.random() * heavyWords.length);
           targetWord = heavyWords.splice(randomIndex, 1)[0];
 
-          // 3. 화면에 해당 단어 노드를 새로 하나 만듭니다. (타겟 전용)
+          // 3. 타겟 노드 생성
           const container = document.getElementById("stream-container");
           const targetNode = document.createElement("span");
           targetNode.className = "word-node";
           targetNode.innerText = targetWord;
-
-          // 위치는 랜덤하게
           targetNode.style.top = Math.random() * 60 + 20 + "vh";
           targetNode.style.left = Math.random() * 60 + 10 + "vw";
-
-          // 4. 타겟 애니메이션 실행
           targetNode.style.animation = "targetFlash 0.6s forwards";
           container.appendChild(targetNode);
 
           isInputPhase = true;
+          document.getElementById("status").innerText = "TYPE NOW";
           document.getElementById("status").style.opacity = "1";
           if (visualInput) visualInput.focus();
 
-          // 입력 제한 시간 (3초)
+          // 4. 입력 제한 시간 (3초) - 실패 시 처리
           inputTimer = setTimeout(() => {
             if (isInputPhase) {
               trials++;
@@ -449,18 +447,21 @@
               showFeedback("TIME OUT", "var(--target-red)");
               if (visualInput) visualInput.classList.add("shake");
               updateAcc();
+
+              // 실패 후 노드 제거 및 다음 라운드
               setTimeout(() => {
-                targetNode.remove();
+                if (targetNode.parentNode) targetNode.remove();
                 playRound();
               }, 600);
             }
           }, 3000);
 
-          // 0.6초 뒤에 타겟 노드 삭제
+          // 5. [중요] 0.6초 뒤에 플래시 애니메이션이 끝나면 노드 제거 (입력 중이 아닐 때만)
           setTimeout(() => {
             if (targetNode.parentNode && !isInputPhase) {
               targetNode.remove();
             }
+            // 만약 입력 성공/실패로 이미 넘어갔다면 여기서 중복 처리하지 않음
           }, 600);
         }, 800);
       }
