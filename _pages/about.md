@@ -17,4 +17,6 @@ Greetings! 안녕하세요!
 
 This is my personal homepage, where I share my thoughts on various topics, focusing on NLP, HCI, and learning through experiences. I also post illustrations that I create for fun.
 
-I enjoy a variety of things, such as singing band songs at karaoke and feeling the speed of e-bikes. But above all, my favorite thing is hiding my husband's potato chips. If you want to help me hide them, please go to Playground.
+I enjoy a variety of things, such as singing band songs at karaoke and feeling the speed of e-bikes. But above all, my favorite thing is hiding my husband's potato chips.
+
+If you want to know more about me, or if you're confident in your typing speed, try the game on the Playground!
