@@ -3,14 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TYPE JIWOO</title>
+    <title>TYPE JIWOO - Living Persona v5.0 FINAL</title>
     <style>
       :root {
         --bg-color: #000000;
-        --text-noise: rgba(255, 255, 255, 0.04);
+        --text-noise: rgba(145, 145, 145, 0.18);
         --target-red: #ff3b30;
         --feedback-green: #34c759;
         --apple-blue: #0071e3;
+        --apple-orange: #ff9500;
+        --apple-cyan: #64d2ff;
         --glass-bg: rgba(255, 255, 255, 0.01);
         --glass-border: rgba(255, 255, 255, 0.08);
       }
@@ -22,7 +24,6 @@
         font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
         -webkit-font-smoothing: antialiased;
       }
-
       body {
         background-color: var(--bg-color);
         color: #f5f5f7;
@@ -48,49 +49,37 @@
       .word-node {
         position: absolute;
         font-size: 1.1rem;
-        font-weight: 700;
+        font-weight: 900;
         color: var(--text-noise);
         user-select: none;
+        /* 기본적으로 줄바꿈 방지 */
         white-space: nowrap;
-        will-change: transform;
-        animation: floating 12s infinite linear;
+        will-change: transform, left, top, opacity, font-size, color;
+        transition:
+          left 2.2s cubic-bezier(0.19, 1, 0.22, 1),
+          top 2.2s cubic-bezier(0.19, 1, 0.22, 1),
+          color 1.5s ease-in-out,
+          font-size 1.2s cubic-bezier(0.23, 1, 0.32, 1),
+          opacity 1.5s ease-in-out,
+          text-shadow 1.5s ease-in-out;
+        opacity: 0.2;
+        transform: translate(-50%, -50%) scale(1); /* 중앙 정렬 기준 추가 */
+        text-align: center;
       }
 
-      @keyframes targetFlash {
-        0% {
-          color: var(--text-noise);
-          transform: scale(1);
-          opacity: 1;
-        }
-        10% {
-          color: var(--target-red);
-          transform: scale(1.5);
-          opacity: 1;
-          z-index: 100;
-        }
-        90% {
-          color: var(--target-red);
-          transform: scale(1.5);
-          opacity: 1;
-          z-index: 100;
-        }
-        100% {
-          color: transparent;
-          transform: scale(0.8);
-          opacity: 0;
-        }
-      }
+      /*  타겟 강조 스타일 - 문장 모드 대응 */
+      .persona-target {
+        z-index: 1000 !important;
+        font-size: 1.6rem !important; /* 문장을 고려해 살짝 줄임 */
+        opacity: 1 !important;
+        filter: brightness(1.6);
+        transform: translate(-50%, -50%) scale(1.1) !important;
 
-      @keyframes floating {
-        0% {
-          transform: translate(0, 0) rotate(0deg);
-        }
-        50% {
-          transform: translate(20px, -20px) rotate(1deg);
-        }
-        100% {
-          transform: translate(0, 0) rotate(0deg);
-        }
+        /* 문장이 길 경우 줄바꿈 허용 */
+        white-space: normal !important;
+        word-break: keep-all; /* 단어 단위 줄바꿈 */
+        max-width: 300px; /* 줄바꿈이 일어날 최대 너비 */
+        line-height: 1.2;
       }
 
       #ui-layer {
@@ -101,18 +90,31 @@
         width: 100%;
       }
 
-      #status {
-        position: fixed;
-        bottom: 130px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 0.8rem;
-        letter-spacing: 0.5em;
-        color: rgba(255, 255, 255, 0.4);
-        text-transform: uppercase;
-        font-weight: 800;
-        opacity: 0;
-        transition: opacity 0.5s ease;
+      /*  모드 선택 버튼 레이아웃 */
+      #mode-selection {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin-bottom: 35px;
+        pointer-events: auto;
+      }
+
+      .mode-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--glass-border);
+        color: #86868b;
+        padding: 10px 24px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+      }
+
+      .mode-btn.active {
+        background: #ffffff;
+        color: #000;
+        border-color: #ffffff;
       }
 
       #top-hud {
@@ -128,87 +130,89 @@
         font-weight: 700;
         letter-spacing: 0.1em;
       }
+      #status {
+        position: fixed;
+        bottom: 130px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.8rem;
+        letter-spacing: 0.5em;
+        color: rgba(255, 255, 255, 0.4);
+        text-transform: uppercase;
+        font-weight: 800;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
 
       .feedback {
         position: fixed;
         top: 45%;
         left: 50%;
         transform: translate(-50%, -50%);
-        font-size: 2.2rem;
+        font-size: 2.8rem;
         font-weight: 900;
         opacity: 0;
-        z-index: 30;
+        z-index: 200;
         pointer-events: none;
-        transition: opacity 0.15s ease;
-        display: none;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
 
-      #result-screen {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.98);
-        z-index: 100;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        backdrop-filter: blur(25px);
-      }
-
-      #start-btn,
-      .retry-btn {
-        background: #ffffff;
-        color: #000;
-        padding: 18px 50px;
-        border-radius: 40px;
-        border: none;
-        font-weight: 800;
-        font-size: 0.95rem;
-        cursor: pointer;
-        pointer-events: auto;
-        transition: all 0.2s ease;
-        letter-spacing: 0.05em;
-      }
-
-      #start-btn:hover {
-        transform: scale(1.05);
-      }
-
-      /* 동적 생성될 입력창 스타일 */
       #input-container {
         position: fixed;
         bottom: 50px;
         left: 50%;
         transform: translateX(-50%);
         width: 90%;
-        max-width: 380px;
+        max-width: 480px;
         z-index: 50;
-        pointer-events: auto;
         opacity: 0;
         transition: opacity 0.4s ease;
       }
-
       #visual-input {
         width: 100%;
         height: 56px;
         padding: 0 20px;
-        background-color: var(--glass-bg);
+        background: var(--glass-bg);
         border: 1px solid var(--glass-border);
         border-radius: 12px;
         color: #ffffff;
-        font-size: 1.15rem;
-        font-weight: 600;
+        font-size: 1.2rem;
         text-align: center;
         text-transform: uppercase;
-        letter-spacing: 0.12em;
         outline: none;
         backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
       }
 
+      #progress-wrapper {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.05);
+        z-index: 60;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      #progress-bar {
+        width: 100%;
+        height: 100%;
+        background: var(--apple-blue);
+        transform-origin: left;
+        transform: scaleX(0);
+      }
+
+      #result-screen {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.98);
+        z-index: 300;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(25px);
+      }
       .shake {
         animation: shake 0.4s;
       }
@@ -227,20 +231,6 @@
           transform: translateX(-4px);
         }
       }
-
-      .timer-warning {
-        color: var(--target-red) !important;
-        animation: pulse 0.5s infinite;
-      }
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.5;
-        }
-      }
     </style>
   </head>
   <body>
@@ -250,85 +240,129 @@
     </div>
 
     <div id="stream-container"></div>
+    <div id="progress-wrapper"><div id="progress-bar"></div></div>
+    <div id="feedback-msg" class="feedback"></div>
 
     <div id="ui-layer">
-      <div id="start-screen">
-        <h1 style="font-size: 3.5rem; margin-bottom: 12px; font-weight: 900; letter-spacing: -0.05em">TYPE JIWOO</h1>
-        <p style="margin-bottom: 45px; color: #86868b; font-size: 1.1rem; line-height: 1.6">
-          Flash: 0.6s | Input: 3.0s<br />A 600ms glimpse into who I am.
-        </p>
-        <button id="start-btn">START</button>
+      <div id="start-screen" style="pointer-events: auto">
+        <h1 style="font-size: 3.5rem; margin-bottom: 8px; font-weight: 900; letter-spacing: -0.05em">TYPE JIWOO</h1>
+        <p style="margin-bottom: 35px; color: #86868b; font-size: 1.1rem">A 600ms glimpse into who I am.</p>
+
+        <div id="mode-selection">
+          <button class="mode-btn active" onclick="setMode('word', this)">KEYWORD</button>
+          <button class="mode-btn" onclick="setMode('sentence', this)">SENTENCE</button>
+        </div>
+
+        <button
+          id="start-btn"
+          style="background: #ffffff; color: #000; padding: 18px 60px; border-radius: 40px; border: none; font-weight: 800; cursor: pointer"
+        >
+          INITIALIZE
+        </button>
       </div>
-      <div id="status">READY</div>
-      <div id="feedback-msg" class="feedback"></div>
+      <div id="status">TYPE NOW</div>
       <div id="input-mount-point"></div>
     </div>
 
     <div id="result-screen">
-      <h2 id="result-rank" style="font-size: 4.5rem; margin-bottom: 10px">RANK</h2>
+      <h2 id="result-rank" style="font-size: 4rem; font-weight: 900; margin-bottom: 10px">RANK</h2>
       <p
         id="result-comment"
-        style="font-size: 1.2rem; color: #86868b; margin-bottom: 40px; max-width: 500px; text-align: center; line-height: 1.6"
+        style="font-size: 1.1rem; color: #86868b; margin-bottom: 40px; max-width: 450px; line-height: 1.6; text-align: center"
       ></p>
-      <button class="retry-btn" onclick="location.reload()">RETRY</button>
+      <button
+        onclick="location.reload()"
+        style="background: #ffffff; color: #000; padding: 15px 45px; border-radius: 30px; border: none; font-weight: 800; cursor: pointer"
+      >
+        RETRY
+      </button>
     </div>
 
     <script>
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      let inputTimer = null;
-      let gameActive = false;
-      let targetWord = "";
-      let isInputPhase = false;
-      let trials = 0;
-      let corrects = 0;
-      let timeLeft = 60;
-      let visualInput = null;
+      let inputTimer = null,
+        gameActive = false,
+        targetWord = "",
+        isInputPhase = false;
+      let trials = 0,
+        corrects = 0,
+        timeLeft = 60,
+        tickCount = 0,
+        visualInput = null;
+      let selectedMode = "word",
+        timeLimit = 3000;
+      let particles = [];
+      const particlesCount = 130;
+      let targetNode = null;
+      let usedNodes = new Set();
 
-      const heavyWords = [
+      const wordData = [
         "JIWOO KIM",
         "JONAS BELOUADI",
-        "GERMANY",
-        "SUNGKYUNKWAN UNIVERSITY",
-        "BANGKOK",
-        "SOUTH KOREA",
-        "VIENNA",
-        "KPOP",
+        "HCI",
+        "LONDON",
+        "AI",
+        "UX",
+        "LAB",
+        "SIMS",
+        "ASMR",
         "SEOUL",
         "SUWON",
-        "TURN TAKING",
-        "CHATBOT",
-        "CONVERSATION",
-        "HCI",
-        "NATURAL LANGUAGE PROCESSING",
+        "GERMANY",
+        "VIENNA",
         "KARAOKE",
-        "E-BIKES",
-        "KEYBOARD",
-        "INTERACTIVE",
-        "LONDON",
-        "TTS & STT",
-        "RESEARCH",
-        "LYON",
-        "OVERLAPBOT",
-        "CROOKIE",
-        "ICE COFFEE",
         "POTATO CHIPS",
-        "MACHINE LEARNING ENGINEER",
-        "LARGE LANGUAGE MODEL",
-        "MACHINE TRANSLATION",
+        "CHOCOLATE",
+        "SUNGKYUNKWAN UNIVERSITY",
+        "NATURAL LANGUAGE PROCESSING",
+        "HUMAN-AI INTERACTION",
+        "JOURNALIST",
+        "MANNHEIM",
+        "MASTER DEGREE",
+        "ICE COFFEE",
       ];
+      const sentenceData = [
+        "Married to Jonas Belouadi",
+        "Researches HCI and NLP",
+        "Holds a Master's degree",
+        "Interned as a Machine Learning Engineer",
+        "Relocating to London soon",
+        "Currently based in Germany",
+        "Passionate about interactive interfaces",
+        "Logged 1000 hours in The Sims 4",
+        "Values design interface as much as model performance",
+        "Prioritizes behavioral consistency over motivation",
+        "Researches conversational interfaces",
+      ];
+      let currentPool = [...wordData];
 
-      function playClickSound() {
+      function setMode(mode, btn) {
+        selectedMode = mode;
+        timeLimit = mode === "word" ? 3000 : 7000;
+        currentPool = mode === "word" ? [...wordData] : [...sentenceData];
+
+        // 문장 모드일 때는 입자 간격을 위해 개수를 조금 줄이는 것도 방법입니다.
+        // (이미 시작된 게임에는 적용 안 됨, 시작 전 선택 시에만 유효)
+        // particlesCount = (mode === 'word') ? 130 : 80;
+
+        document.querySelectorAll(".mode-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        if (audioCtx.state === "suspended") audioCtx.resume();
+      }
+
+      // --- [오디오 시스템] ---
+      function playSystemTone(isSuccess) {
         const now = audioCtx.currentTime;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.type = "triangle";
-        osc.frequency.setValueAtTime(160, now);
-        gain.gain.setValueAtTime(0.08, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(isSuccess ? 880 : 130, now);
+        gain.gain.setValueAtTime(0.05, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(now + 0.03);
+        osc.stop(now + 0.2);
       }
 
       function playTickSound(isUrgent) {
@@ -336,8 +370,8 @@
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = "square";
-        osc.frequency.setValueAtTime(isUrgent ? 1500 : 600, now);
-        gain.gain.setValueAtTime(isUrgent ? 0.03 : 0.015, now);
+        osc.frequency.setValueAtTime(isUrgent ? 1200 : 500, now);
+        gain.gain.setValueAtTime(isUrgent ? 0.015 : 0.008, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
@@ -345,247 +379,306 @@
         osc.stop(now + 0.05);
       }
 
-      function playSystemTone(isSuccess) {
+      function playClickSound() {
         const now = audioCtx.currentTime;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = "sine";
-        osc.frequency.setValueAtTime(isSuccess ? 1000 : 120, now);
-        gain.gain.setValueAtTime(0.08, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        osc.frequency.setValueAtTime(440, now);
+        gain.gain.setValueAtTime(0.01, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(now + 0.25);
+        osc.stop(now + 0.05);
       }
 
-      function createWordNode() {
-        const span = document.createElement("span");
-        span.className = "word-node";
-        span.innerText = heavyWords[Math.floor(Math.random() * heavyWords.length)];
-        span.style.top = Math.random() * 82 + "vh";
-        span.style.left = Math.random() * 80 + "vw";
-        document.getElementById("stream-container").appendChild(span);
-      }
-
-      let tickCount = 0; // 이 변수는 함수 밖(script 상단)에 선언해두는 게 안전합니다.
-
-      function startTimer() {
-        // 주기를 1000에서 250으로 변경 (0.25초마다 반복)
-        const t = setInterval(() => {
-          if (!gameActive) {
-            clearInterval(t);
-            return;
-          }
-
-          // 0.25초마다 "띡" 소리 발생
-          playTickSound(timeLeft <= 10);
-
-          tickCount++;
-
-          // 4번 틱이 울릴 때마다 (0.25s * 4 = 1s) 실제 시간 1초 차감
-          if (tickCount % 4 === 0) {
-            timeLeft--;
-            document.getElementById("timer-val").innerText = timeLeft;
-
-            if (timeLeft <= 10) {
-              document.getElementById("timer-val").classList.add("timer-warning");
-            }
-
-            if (timeLeft <= 0) {
-              endGame();
-              clearInterval(t);
-            }
-          }
-        }, 250);
-      }
-
-      function playRound() {
-        if (!gameActive) return;
-        if (inputTimer) clearTimeout(inputTimer);
-
-        // 1. 단어가 다 떨어졌으면 게임 종료
-        if (heavyWords.length === 0) {
-          endGame();
-          return;
-        }
-
-        isInputPhase = false;
-        document.getElementById("status").innerText = "WAITING"; // READY 대신 진행 상황 표시
-        document.getElementById("status").style.opacity = "0.2";
-        if (visualInput) {
-          visualInput.value = "";
-          visualInput.classList.remove("shake");
-        }
-
-        setTimeout(() => {
-          // 2. 단어 추출
-          const randomIndex = Math.floor(Math.random() * heavyWords.length);
-          targetWord = heavyWords.splice(randomIndex, 1)[0];
-
-          // 3. 타겟 노드 생성
-          const container = document.getElementById("stream-container");
-          const targetNode = document.createElement("span");
-          targetNode.className = "word-node";
-          targetNode.innerText = targetWord;
-          targetNode.style.top = Math.random() * 60 + 20 + "vh";
-          targetNode.style.left = Math.random() * 60 + 10 + "vw";
-          targetNode.style.animation = "targetFlash 0.6s forwards";
-          container.appendChild(targetNode);
-
-          isInputPhase = true;
-          document.getElementById("status").innerText = "TYPE NOW";
-          document.getElementById("status").style.opacity = "1";
-          if (visualInput) visualInput.focus();
-
-          // 4. 입력 제한 시간 (3초) - 실패 시 처리
-          inputTimer = setTimeout(() => {
-            if (isInputPhase) {
-              trials++;
-              isInputPhase = false;
-              playSystemTone(false);
-              showFeedback("TIME OUT", "var(--target-red)");
-              if (visualInput) visualInput.classList.add("shake");
-              updateAcc();
-
-              // 실패 후 노드 제거 및 다음 라운드
-              setTimeout(() => {
-                if (targetNode.parentNode) targetNode.remove();
-                playRound();
-              }, 600);
-            }
-          }, 3000);
-
-          // 5. [중요] 0.6초 뒤에 플래시 애니메이션이 끝나면 노드 제거 (입력 중이 아닐 때만)
-          setTimeout(() => {
-            if (targetNode.parentNode && !isInputPhase) {
-              targetNode.remove();
-            }
-            // 만약 입력 성공/실패로 이미 넘어갔다면 여기서 중복 처리하지 않음
-          }, 600);
-        }, 800);
-      }
-
-      function handleInput(e) {
-        if (!isInputPhase || !gameActive) return;
-        if (e.key === "Enter") {
-          if (inputTimer) clearTimeout(inputTimer);
-          trials++;
-          const userVal = visualInput.value.trim().toUpperCase();
-          if (userVal === targetWord) {
-            corrects++;
-            playSystemTone(true);
-            showFeedback("MATCHED", "var(--feedback-green)");
-          } else {
-            playSystemTone(false);
-            showFeedback("MISSED", "var(--target-red)");
-            visualInput.classList.add("shake");
-          }
-          updateAcc();
-          isInputPhase = false;
-          setTimeout(playRound, 800);
-        } else if (e.key.length === 1 || e.key === "Backspace") {
-          playClickSound();
-        }
-      }
-
-      function updateAcc() {
-        const acc = trials === 0 ? 0 : Math.round((corrects / trials) * 100);
-        document.getElementById("acc-val").innerText = acc;
-      }
-
-      function showFeedback(text, color) {
+      function showFeedback(text, isSuccess) {
         const fb = document.getElementById("feedback-msg");
-
-        // 🔥 완전 초기화 (이게 핵심)
-        fb.style.transition = "none";
-        fb.style.opacity = "0";
-        fb.style.display = "none";
-
-        // 강제 reflow (브라우저 상태 초기화)
-        fb.offsetHeight;
-
-        // 값 세팅
         fb.innerText = text;
-        fb.style.color = color;
-        fb.style.display = "block";
-
-        // transition 다시 켜기
-        fb.style.transition = "opacity 0.15s ease";
-
-        requestAnimationFrame(() => {
-          fb.style.opacity = "1";
-          fb.style.transform = "translate(-50%, -50%) scale(1.15)";
-        });
-
-        // 사라짐
+        fb.style.color = isSuccess ? "var(--feedback-green)" : "var(--target-red)";
+        fb.style.opacity = "1";
+        fb.style.transform = "translate(-50%, -50%) scale(1.2)";
         setTimeout(() => {
           fb.style.opacity = "0";
           fb.style.transform = "translate(-50%, -50%) scale(1)";
         }, 500);
+      }
 
-        // 🔥 무조건 숨김 (조건 제거)
+      function updateEmotionalPersona() {
+        if (!gameActive) return;
+        const acc = parseInt(document.getElementById("acc-val").innerText) || 0;
+        const time = Date.now() * 0.0025;
+
+        let currentTone;
+        if (acc >= 90) currentTone = "var(--feedback-green)";
+        else if (acc >= 70) currentTone = "var(--apple-cyan)";
+        else if (acc >= 40) currentTone = "var(--apple-blue)";
+        else currentTone = "var(--target-red)";
+
+        particles.forEach((s, i) => {
+          let tx, ty;
+          const p = i / particlesCount;
+          const offset = i % 2 === 0 ? -1.2 : 1.2; // 위아래로 1.2vh씩 벌림 (== 효과)
+
+          if (acc >= 90) {
+            // 웃는 표정: 눈(곡선)은 그대로 두고 입(사각형)만 보강
+            if (p < 0.2) {
+              const t = p / 0.2;
+              tx = 25 + t * 15;
+              ty = 45 - Math.sin(t * Math.PI) * 10;
+            } else if (p < 0.4) {
+              const t = (p - 0.2) / 0.2;
+              tx = 60 + t * 15;
+              ty = 45 - Math.sin(t * Math.PI) * 10;
+            } else {
+              const t = (p - 0.4) / 0.6;
+              const b = 10,
+                cx = 50,
+                cy = 68;
+              if (t < 0.25) {
+                tx = cx - b / 2 + (t / 0.25) * b;
+                ty = cy - b / 2 + offset / 2;
+              } else if (t < 0.5) {
+                tx = cx + b / 2 + offset / 2;
+                ty = cy - b / 2 + ((t - 0.25) / 0.25) * b;
+              } else if (t < 0.75) {
+                tx = cx + b / 2 - ((t - 0.5) / 0.25) * b;
+                ty = cy + b / 2 + offset / 2;
+              } else {
+                tx = cx - b / 2 + offset / 2;
+                ty = cy + b / 2 - ((t - 0.75) / 0.25) * b;
+              }
+            }
+          } else if (acc >= 70) {
+            // 윙크/미소: 일자 구간 모두 두 줄 처리
+            if (p < 0.25) {
+              const t = p / 0.25;
+              tx = 25 + t * 15;
+              ty = 45 - Math.sin(t * Math.PI) * 10;
+            } else if (p < 0.5) {
+              const t = (p - 0.25) / 0.25;
+              tx = 60 + t * 15;
+              ty = 45 - Math.sin(t * Math.PI) * 10;
+            } else {
+              const t = (p - 0.5) / 0.5;
+              tx = 40 + t * 20;
+              ty = 65 + offset;
+            }
+          } else if (acc >= 40) {
+            // 무표정: 동그란 눈은 유지, 입은 두 줄
+            if (p < 0.25) {
+              const t = (p / 0.25) * Math.PI * 2;
+              tx = 32 + Math.cos(t) * 5;
+              ty = 45 + Math.sin(t) * 5;
+            } else if (p < 0.5) {
+              const t = ((p - 0.25) / 0.25) * Math.PI * 2;
+              tx = 68 + Math.cos(t) * 5;
+              ty = 45 + Math.sin(t) * 5;
+            } else {
+              const t = (p - 0.5) / 0.5;
+              tx = 45 + ((p - 0.5) / 0.5) * 10;
+              ty = 70 + offset;
+            }
+          } else {
+            // 화난 표정: 눈썹(ㅡ ㅡ)과 입(ㅡ) 모두 두 줄 처리
+            if (p < 0.25) {
+              tx = 25 + (p / 0.25) * 15;
+              ty = 45 + offset;
+            } else if (p < 0.5) {
+              tx = 60 + ((p - 0.25) / 0.25) * 15;
+              ty = 45 + offset;
+            } else {
+              tx = 42 + ((p - 0.5) / 0.5) * 16;
+              ty = 70 + offset;
+            }
+          }
+
+          const fX = Math.sin(time + i) * 1.5;
+          const fY = Math.cos(time * 0.7 + i) * 1.5;
+          s.style.left = `calc(${tx}vw + ${fX}px)`;
+          s.style.top = `calc(${ty}vh + ${fY}px)`;
+
+          // 타겟 노드와 일반 노드의 스타일 처리
+          if (s.classList.contains("persona-target")) {
+            s.style.color = currentTone;
+            s.style.textShadow = `0 0 25px ${currentTone}`;
+            s.style.filter = "brightness(1.6)"; // 타겟일 때만 밝게
+            s.style.opacity = "1";
+          } else {
+            // 타겟이 아닐 때 (원래 배경 입자 상태로 복구)
+            s.style.color = currentTone;
+            s.style.textShadow = "none";
+            s.style.filter = "none"; // 밝기 효과 제거
+            // 배경 입자 특유의 반투명한 느낌 복구 (0.15 ~ 0.25 사이에서 호흡)
+            s.style.opacity = 0.15 + Math.sin(time * 0.5 + i) * 0.1;
+          }
+        });
+        requestAnimationFrame(updateEmotionalPersona);
+      }
+
+      function playRound() {
+        if (!gameActive) return;
+
+        // 1. 이전 라운드 정리
+        if (inputTimer) clearTimeout(inputTimer);
+        isInputPhase = false;
+        document.getElementById("progress-wrapper").style.opacity = "0";
+        document.getElementById("status").style.opacity = "0";
+        if (visualInput) {
+          visualInput.value = "";
+          visualInput.blur();
+        }
+
+        // [중요] 방금 타겟이었던 노드가 있다면, 여기서 확실하게 처리
+        if (targetNode) {
+          targetNode.classList.remove("persona-target");
+          usedNodes.add(targetNode); // 👈 여기서 "이미 씀" 목록에 확실히 추가!
+          targetNode.style.opacity = "0"; // 화면에서 숨김
+          targetNode.style.pointerEvents = "none";
+        }
+
+        // 2. 새로운 타겟 선정
         setTimeout(() => {
-          fb.style.display = "none";
-        }, 700);
+          if (!gameActive) return;
+
+          // [중요] usedNodes에 없는 녀석들만 골라내기
+          let availableNodes = particles.filter((node) => !usedNodes.has(node));
+
+          // 뽑을 수 있는 단어가 없으면 게임 종료
+          if (availableNodes.length === 0) {
+            endGame();
+            return;
+          }
+
+          // 남은 것 중 하나 선택
+          targetNode = availableNodes[Math.floor(Math.random() * availableNodes.length)];
+
+          targetWord = targetNode.innerText.toUpperCase();
+          targetNode.classList.add("persona-target");
+
+          // 3. 입력창 활성화 및 타이머 시작
+          setTimeout(() => {
+            if (!gameActive) return;
+            isInputPhase = true;
+            document.getElementById("status").style.opacity = "1";
+            if (visualInput) visualInput.focus();
+
+            const pb = document.getElementById("progress-bar");
+            document.getElementById("progress-wrapper").style.opacity = "1";
+            pb.style.transition = "none";
+            pb.style.transform = "scaleX(1)";
+            pb.offsetHeight;
+            pb.style.transition = `transform ${timeLimit}ms linear`;
+            pb.style.transform = "scaleX(0)";
+
+            inputTimer = setTimeout(() => {
+              if (isInputPhase) {
+                trials++;
+                isInputPhase = false;
+                playSystemTone(false);
+                showFeedback("TIMEOUT!", false);
+                updateAcc();
+                // 타임아웃 시에도 다음 라운드로 (이때 현재 targetNode가 usedNodes에 들어감)
+                setTimeout(playRound, 800);
+              }
+            }, timeLimit);
+          }, 200);
+        }, 400);
+      }
+
+      function handleInput(e) {
+        if (!isInputPhase || !gameActive) return;
+        if (e.key.length === 1 || e.key === "Backspace") playClickSound();
+        if (e.key === "Enter") {
+          if (inputTimer) clearTimeout(inputTimer);
+          trials++;
+          if (visualInput.value.trim().toUpperCase() === targetWord) {
+            corrects++;
+            playSystemTone(true);
+            showFeedback("MATCH!", true);
+          } else {
+            playSystemTone(false);
+            visualInput.classList.add("shake");
+            showFeedback("WRONG!", false);
+          }
+          updateAcc();
+          isInputPhase = false;
+          setTimeout(playRound, 800);
+        }
+      }
+
+      function updateAcc() {
+        document.getElementById("acc-val").innerText = Math.round((corrects / trials) * 100 || 0);
       }
 
       function endGame() {
         gameActive = false;
         document.getElementById("input-container").style.opacity = "0";
-        const accuracy = parseInt(document.getElementById("acc-val").innerText);
-        const rankTitle = document.getElementById("result-rank");
-        const rankComment = document.getElementById("result-comment");
 
-        if (accuracy >= 90) {
-          rankTitle.innerText = "SO CLOSE!";
-          rankTitle.style.color = "var(--feedback-green)";
-          rankComment.innerText = "Wow, you know me so well! We're definitely on the same page. Happy to meet you! 🤗";
-        } else if (accuracy >= 70) {
-          rankTitle.innerText = "GREAT MATCH";
-          rankTitle.style.color = "#64D2FF";
-          rankComment.innerText = "You have a deep understanding of me! Welcome to inner circle 😆 ";
-        } else if (accuracy >= 40) {
-          rankTitle.innerText = "GETTING THERE";
-          rankTitle.style.color = "var(--apple-blue)";
-          rankComment.innerText = "Not bad! You're starting to see what I'm about. Let's interact more. 😀";
-        } else if (accuracy >= 20) {
-          rankTitle.innerText = "STILL FRIENDS?";
-          rankTitle.style.color = "#FF9500";
-          rankComment.innerText = "Are you sure we've met? I think we need a long coffee chat to catch up. ☕️ ";
+        const acc = parseInt(document.getElementById("acc-val").innerText) || 0;
+        const rt = document.getElementById("result-rank");
+        const rc = document.getElementById("result-comment");
+
+        if (acc >= 90) {
+          rt.innerText = "AMAZING!";
+          rt.style.color = "var(--feedback-green)";
+          rc.innerText = "Wow, you know me so well! We're definitely on the same page. Happy to meet you! 🤗";
+        } else if (acc >= 70) {
+          rt.innerText = "GREAT MATCH";
+          rt.style.color = "var(--apple-cyan)"; // 기존 #64D2FF 대응
+          rc.innerText = "You have a deep understanding of me! Welcome to inner circle 😆";
+        } else if (acc >= 40) {
+          rt.innerText = "GETTING THERE";
+          rt.style.color = "var(--apple-blue)";
+          rc.innerText = "Not bad! You're starting to see what I'm about. Let's interact more. 😀";
+        } else if (acc >= 20) {
+          rt.innerText = "STILL FRIENDS?";
+          rt.style.color = "var(--apple-orange)"; // 기존 #FF9500 대응
+          rc.innerText = "Are you sure we've met? I think we need a long coffee chat to catch up. ☕️";
         } else {
-          rankTitle.innerText = "HELLO STRANGER";
-          rankTitle.style.color = "var(--target-red)";
-          rankComment.innerText = "Oops, you're a complete stranger! But hey, it's a good chance to start fresh. 😇";
+          rt.innerText = "HELLO STRANGER";
+          rt.style.color = "var(--target-red)";
+          rc.innerText = "Oops, you're a complete stranger! But hey, it's a good chance to start fresh. 😇";
         }
+
         document.getElementById("result-screen").style.display = "flex";
       }
 
       document.getElementById("start-btn").addEventListener("click", () => {
         if (audioCtx.state === "suspended") audioCtx.resume();
-
-        // 🔥 여기 추가 (가장 중요)
-        const fb = document.getElementById("feedback-msg");
-        fb.style.display = "none";
-        fb.style.opacity = "0";
-        fb.innerText = "";
-
         gameActive = true;
+        usedNodes = new Set();
         document.getElementById("start-screen").style.display = "none";
-
-        // 입력창 생성
+        document.getElementById("stream-container").innerHTML = "";
         const mount = document.getElementById("input-mount-point");
-        mount.innerHTML = `<div id="input-container"><input type="text" id="visual-input" autocomplete="off" spellcheck="false"></div>`;
+        mount.innerHTML = `<div id="input-container"><input type="text" id="visual-input" autocomplete="off" spellcheck="false" placeholder="..."></div>`;
         visualInput = document.getElementById("visual-input");
         visualInput.addEventListener("keydown", handleInput);
-
         setTimeout(() => {
           document.getElementById("input-container").style.opacity = "1";
-        }, 50);
+          visualInput.focus();
+        }, 100);
 
-        document.getElementById("status").style.opacity = "1";
-        for (let i = 0; i < 150; i++) createWordNode();
-        startTimer();
+        for (let i = 0; i < particlesCount; i++) {
+          const s = document.createElement("span");
+          s.className = "word-node";
+          s.innerText = currentPool[Math.floor(Math.random() * currentPool.length)];
+          document.getElementById("stream-container").appendChild(s);
+          particles.push(s);
+        }
+        requestAnimationFrame(updateEmotionalPersona);
+        setInterval(() => {
+          if (gameActive) {
+            playTickSound(timeLeft <= 10);
+            tickCount++;
+            if (tickCount % 4 === 0) {
+              timeLeft--;
+              document.getElementById("timer-val").innerText = timeLeft;
+              if (timeLeft <= 0) endGame();
+            }
+          }
+        }, 250);
         playRound();
       });
     </script>
